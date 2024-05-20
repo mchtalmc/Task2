@@ -9,7 +9,7 @@ namespace ToDoList.WebApi.Mapping
         public TasksMapping()
         {
             CreateMap<Tasks, CreateTaskDto>().ReverseMap();
-            CreateMap<Tasks, UpdateTaskDto>().ReverseMap();
+            CreateMap<Tasks, UpdateTasksDto>().ReverseMap();
             CreateMap<Tasks, ResultTaskDto>().ReverseMap();
         }
     }

@@ -31,9 +31,11 @@ public class GenericRepository<T> : IGenericDal<T> where T : class
         return values;
     }
 
+   
+
     public async Task<bool> Remove(T entity)
     {
-        _context.Remove(entity);
+         _context.Remove(entity);
         await _context.SaveChangesAsync();
         return true;
     }
@@ -50,5 +52,7 @@ public class GenericRepository<T> : IGenericDal<T> where T : class
         await _context.SaveChangesAsync();
         return true;
     }
+
+   
 }
 

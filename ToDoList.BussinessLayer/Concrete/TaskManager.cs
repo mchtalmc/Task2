@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TodoList.Core.Dtos;
 using TodoList.Core.Dtos.TaskDto;
 using TodoList.Core.Dtos.UserDtos;
 using TodoList.Core.Entities;
@@ -24,36 +25,37 @@ namespace ToDoList.BussinessLayer.Concrete
             _mapper = mapper;
         }
 
-        public async Task<bool> AddTasks(CreateTaskDto createTaskDto)
+        public async Task<BaseResponse<object>> AddTasks(CreateTaskDto createTaskDto)
         {
-            await _taskDal.Add(_mapper.Map<Tasks>(createTaskDto));
-            return true;
+            await _taskDal.Add(_mapper.Map < Tasks > (createTaskDto));
+            return new BaseResponse<object> { IsSuccess= true , Message="Kayit Basarili"};
         }
 
-        public async Task<bool> RemoveTask(int id)
+        public async Task<BaseResponse<ResultTaskDto>> GetTaskById(int id)
         {
             var value = await _taskDal.TGet(id);
-            await _taskDal.Remove(value);
-            return true;
+            var response= _mapper.Map<ResultTaskDto>(value);
+            return new BaseResponse<ResultTaskDto> { IsSuccess = true, Message = $"{id} Kayitli Gorev", Data = response };
         }
 
-        public async Task<bool> UpdateTask(UpdateTaskDto updateTaskDto)
+        public async Task<BaseResponse<List<ResultTaskDto>>> GetTaskList()
         {
-            await _taskDal.Update(_mapper.Map<Tasks>(updateTaskDto));
-            return true;
+            var value = await _taskDal.GetList();
+            var response= _mapper.Map<List<ResultTaskDto>>(value);
+            return new BaseResponse<List<ResultTaskDto>> { IsSuccess = true, Message="Gorev Listesi",Data = response};
         }
 
-        public async Task<List<ResultTaskDto>> GetTaskList()
-        {
-            var entity= await _taskDal.GetList();
-            var value= _mapper.Map<List<ResultTaskDto>>(entity);
-            return value;
-        }
-
-        public async Task<ResultTaskDto> GetTaskById(int id)
+        public async Task<BaseResponse<object>> RemoveTask(int id)
         {
             var value = await _taskDal.TGet(id);
-            return _mapper.Map<ResultTaskDto>(value);
+            bool isDelete = await _taskDal.Remove(value);
+            return new BaseResponse<object> { IsSuccess = isDelete, Message = $"{id}'li Basarili bir sekilde kaldirildi" };
+        }
+
+        public async Task<BaseResponse<object>> UpdateTask(UpdateTasksDto updateTasksDto)
+        {
+            await _taskDal.Update(_mapper.Map<Tasks>(updateTasksDto));
+            return new BaseResponse<object> { IsSuccess = true, Message = "Guncellendi" };
         }
     }
 }

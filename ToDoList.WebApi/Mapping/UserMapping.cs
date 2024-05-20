@@ -6,10 +6,6 @@ namespace ToDoList.WebApi.Mapping
 {
     public class UserMapping :Profile
     {
-
-
-
-
         public UserMapping()
         {
             CreateMap<User, CreateUserDto>().ReverseMap();

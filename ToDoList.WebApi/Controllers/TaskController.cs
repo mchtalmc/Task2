@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TodoList.Core.Dtos;
 using TodoList.Core.Dtos.TaskDto;
 using TodoList.Core.Entities;
 using ToDoList.BussinessLayer.Abstract;
@@ -19,36 +20,44 @@ namespace ToDoList.WebApi.Controllers
             _taskService = taskService;
             _mapper = mapper;
         }
+
         [HttpPost]
         public async Task<IActionResult> CreateTask(CreateTaskDto createTaskDto)
         {
-            await _taskService.AddTasks(createTaskDto);
-            return Ok(true);
-        }
-        [HttpGet]
-        public async Task<IActionResult> GetTaskList()
-        {
-          var values=   await _taskService.GetTaskList();
-            return Ok(values);
+            
+               await _taskService.AddTasks(createTaskDto);
+                return Ok(new BaseResponse<object> { Message="Gorev Eklendi", IsSuccess=true});
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTaskById(int id)
         {
-            var value = await _taskService.GetTaskById(id);
+            var value= await _taskService.GetTaskById(id);
             return Ok(value);
         }
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public async Task<IActionResult> RemoveTask(int id)
         {
-            await _taskService.RemoveTask(id);
-            return Ok(true);
+           await _taskService.RemoveTask(id);
+            return Ok(new BaseResponse<object> { IsSuccess = true, Message = $"{id}'li Kullanici Silindi" });
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetTaskList()
+        {
+            var value = await _taskService.GetTaskList();
+            return Ok(value);
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateTask(UpdateTaskDto updateTaskDto)
+        public async Task<IActionResult> UpdateTask(UpdateTasksDto updateTasksDto)
         {
-            await _taskService.UpdateTask(updateTaskDto);
-            return Ok(true);
+            await _taskService.UpdateTask(updateTasksDto);
+            return Ok(new BaseResponse<object> { IsSuccess = true, Message = "Task Guncellendi" });
         }
+
+      
+
+    
+
+       
 
        
     }

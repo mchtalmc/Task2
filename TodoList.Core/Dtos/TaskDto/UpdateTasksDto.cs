@@ -8,9 +8,8 @@ using TodoList.Core.Entities;
 
 namespace TodoList.Core.Dtos.TaskDto
 {
-    public class ResultTaskDto : BaseTasksResponse
+    public class UpdateTasksDto : BaseTaskRequest
     {
-
         public int TasksId { get; set; }
     }
 }

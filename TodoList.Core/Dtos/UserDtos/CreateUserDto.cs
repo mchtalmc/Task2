@@ -3,19 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TodoList.Core.Entities;
 
 namespace TodoList.Core.Dtos.UserDtos
 {
-    public class CreateUserDto
+    public class CreateUserDto :BaseUserRequest
     {
-       
-        public string Username { get; set; }
-        public string UserİmageUrl { get; set; }
-        public string Name { get; set; }
-        public int Age { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
+
+
 
     }
 }

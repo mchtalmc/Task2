@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TodoList.Core.Dtos;
 using TodoList.Core.Dtos.TaskDto;
 using TodoList.Core.Dtos.UserDtos;
 using TodoList.Core.Entities;
@@ -24,37 +25,37 @@ namespace ToDoList.BussinessLayer.Concrete
             _mapper = mapper;
         }
 
-        public async Task<bool> AddUser(CreateUserDto createUserDto)
+        public async Task<BaseResponse<object>> AddUser(CreateUserDto createUserDto)
         {
             await _userDal.Add(_mapper.Map<User>(createUserDto));
-            return true;
+            return new BaseResponse<object> { IsSuccess=true, Message="Kayit Basarili" };
         }
 
-        public async Task<bool> DeleteUser(int id)
+        public async Task<BaseResponse<object>> DeleteUser(int id)
+        {
+           var value= await _userDal.TGet(id);
+           bool isDelete= await _userDal.Remove(value);
+            return new BaseResponse<object> { Message = $"{id} Kullanici silindi", IsSuccess = isDelete };
+        }
+
+        public async Task<BaseResponse<List<ResultUserDto>>> GetAll()
+        {
+            var value = await _userDal.GetList();
+            var response = _mapper.Map<List<ResultUserDto>>(value);
+            return new BaseResponse<List<ResultUserDto>> { IsSuccess=true, Message="Tum Kullanicilar", Data=response };
+        }
+
+        public async Task<BaseResponse<ResultUserDto>> GetUserById(int id)
         {
             var value = await _userDal.TGet(id);
-            await _userDal.Remove(value);
-            return true;
+            var response= _mapper.Map<ResultUserDto>(value);
+            return new BaseResponse<ResultUserDto> { IsSuccess = true, Message = $"{id}'li Kullanici" , Data=response};
         }
 
-        public async Task<List<ResultUserDto>> GetAll()
+        public async Task<BaseResponse<object>> UpdateUser(UpdateUserDto updateUserDto)
         {
-            var entity = await _userDal.GetList();
-            var value = _mapper.Map<List<ResultUserDto>>(entity);
-            return value;
-
-        }
-
-        public async Task<ResultUserDto> GetUserById(int id)
-        {
-            var value = await _userDal.TGet(id);
-            return _mapper.Map<ResultUserDto>(value);
-        }
-
-        public async Task<bool> UpdateUser(UpdateUserDto updateUserDto)
-        {
-           await  _userDal.Update(_mapper.Map<User>(updateUserDto));
-            return true;
+            await _userDal.Update(_mapper.Map<User>(updateUserDto));
+            return new BaseResponse<object> { IsSuccess = true, Message = "Guncelleme Basarili" };
         }
     }
 }

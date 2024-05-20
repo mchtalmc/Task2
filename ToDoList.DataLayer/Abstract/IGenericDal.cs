@@ -9,8 +9,8 @@ namespace ToDoList.DataLayer.Abstract
     public interface IGenericDal<T> 
     {
         Task<bool> Add(T entity);
-        Task<bool> Remove(T entity);
-        Task<bool> Update(T Entity);
+        Task<bool> Remove(T Entity);
+        Task<bool> Update(T entity);
         Task<T> TGet(int id);
         Task<List<T>> GetList();
     }
