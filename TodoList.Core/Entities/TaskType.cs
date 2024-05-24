@@ -15,6 +15,5 @@ namespace TodoList.Core.Entities
         Sport = 5,
         Education = 6,
         Other=7
-
     }
 }

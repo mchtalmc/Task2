@@ -11,6 +11,8 @@ namespace ToDoList.WebApi.Mapping
             CreateMap<Tasks, CreateTaskDto>().ReverseMap();
             CreateMap<Tasks, UpdateTasksDto>().ReverseMap();
             CreateMap<Tasks, ResultTaskDto>().ReverseMap();
+            CreateMap<GetTaskRequest,GetTaskRequestDto>().ReverseMap();
+            CreateMap<Tasks, GetTaskRequestDto>().ReverseMap();
         }
     }
 }

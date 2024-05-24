@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TodoList.Core.Dtos;
+using TodoList.Core.Dtos.TaskDto;
 using TodoList.Core.Dtos.UserDtos;
 using TodoList.Core.Entities;
 using ToDoList.BussinessLayer.Abstract;
@@ -9,51 +11,115 @@ namespace ToDoList.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize] // Token kullanma sarti
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly IMapper _mapper;
-
-        public UserController(IUserService userService, IMapper mapper)
+        public UserController(IUserService userService)
         {
             _userService = userService;
-            _mapper = mapper;
-        }
-        [HttpGet]
-        public async Task<IActionResult> GetUserList()
-        {
-            var value = await _userService.GetAll();
-
-            return Ok(value);
         }
 
-        [HttpGet("{id}")]
+        // FromBody
+        // FromRoute, FromQuery
+
+
+
+   
+        [HttpGet("{id}/userId")]
         public async Task<IActionResult> GetUserById(int id)
         {
             var value = await _userService.GetUserById(id);
             return Ok(value);
         }
-        [HttpDelete]
-        public async Task<IActionResult> RemoveUser(int id)
+
+
+        [HttpPut("updateuser")]
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto updateUserDto)
         {
-            var value = await _userService.DeleteUser(id);
-            return Ok(new BaseResponse<object> { IsSuccess = true, Message = $"{id}'li Kullanici Silindi" });
+            var value = await _userService.UpdateUser(updateUserDto);
+            return Ok();
         }
-        [HttpPut]
-        public async Task<IActionResult> UpdateUser(UpdateUserDto updateUserDto)
-        {
-            var value=  await _userService.UpdateUser(updateUserDto);
-            return Ok(new BaseResponse<object> { IsSuccess = true, Message = "Kullanici Guncellendi" });
-        }
-        [HttpPost]
-        public async Task<IActionResult> CreateUser(CreateUserDto createUserDto)
+
+
+        [HttpPost("createuser")]
+        public async Task<IActionResult> CreateUser([FromBody] CreateUserDto createUserDto)
         {
             await _userService.AddUser(createUserDto);
-            return Ok(new BaseResponse<object> { IsSuccess=true, Message="Kullanici Kaydedildi"});
+            return Ok();
+        }
+
+
+        [HttpDelete("removeuser")]
+        public async Task<IActionResult> RemoveUser( int id)
+        {
+            var value = await _userService.DeleteUser(id);
+            return Ok();
+        }
+
+        [HttpGet("/anyfilter")]
+        public async Task<IActionResult> GetTaskAnyFilter([FromQuery]GetUserRequest userRequest)
+        {
+            var value = await _userService.GetUserAnyParemetrer(userRequest);
+            return Ok(value);
         }
 
 
 
 
+
+
+
+
+
+
+
+        //[HttpGet("{username}/username")]
+        //public async Task<IActionResult> GetUserWithByUsername(string username)
+        //{
+        //    var value = await _userService.GetUserWithUserName(username);
+        //    return Ok(value);
+        //}
+
+
+        //[HttpGet("{age}/age")]
+        //public async Task<IActionResult> GetUserByAge(int age)
+        //{
+        //    var value = await _userService.GetUserByAge(age);
+        //    return Ok(value);
+        //}
+
+
+        //[HttpGet("{email}/email")]
+        //public async Task<IActionResult> GetUserByEmail(string email)
+        //{
+        //    var value = await _userService.GetUserByEmail(email);
+        //    return Ok(value);
+        //}
+
+
+        //[HttpGet("{name}/name")]
+        //public async Task<IActionResult> GetUserByName(string name)
+        //{
+        //    var value = await _userService.GetUserByName(name);
+        //    return Ok(value);
+        //}
+
+
+        //[HttpGet("{userImageUrl}/userImageUrl")]
+        //public async Task<IActionResult> GetUserWithUserImageUrl(string userImageUrl)
+        //{
+        //    var value = await _userService.GetUserByUserImageUrl(userImageUrl);
+        //    return Ok(value);
+        //}
+
+
+       
+
+
+      
+
+
+        
     }
 }

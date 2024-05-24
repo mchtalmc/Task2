@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TodoList.Core.Entities;
+using TodoList.Core.Authentication;
 
 namespace ToDoList.DataLayer.Abstract
 {
-    public interface ITaskDal : IGenericDal<Tasks>
+    public interface IAuthRepository
     {
-        
+        public Task<UserLoginResponse> LoginUser(UserLoginRequest request);
     }
 }

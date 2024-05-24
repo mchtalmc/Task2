@@ -12,5 +12,10 @@ namespace TodoList.Core.Dtos
         public string Message { get; set; }
         public bool IsSuccess { get; set; }
 
+        public BaseResponse(bool ısSuccess=true)
+        {
+            IsSuccess = ısSuccess;
+        }
+        
     }
 }

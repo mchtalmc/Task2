@@ -16,5 +16,19 @@ namespace ToDoList.BussinessLayer.Abstract
         Task<BaseResponse<object>> RemoveTask(int id);
         Task<BaseResponse<ResultTaskDto>> GetTaskById(int id);
         Task<BaseResponse<List<ResultTaskDto>>> GetTaskList();
+        Task<BaseResponse<List<ResultTaskDto>>> GetTaskWithUserById(int userId);
+        Task<BaseResponse<List<GetTaskRequestDto>>> GetTaskWithAnyParemetre(GetTaskRequest request);
+
+
+
+
+
+
+
+       // Task<BaseResponse<List<ResultTaskDto>>> GetTasksWithTasksName(string? name);
+      //  Task<BaseResponse<List<ResultTaskDto>>> GetTasksWithTasksImageUrl(string? tasksImageUrl);
+       // Task<BaseResponse<List<ResultTaskDto>>> GetTasksWithTasksStatus(string? tasksStatus);
+       // Task<BaseResponse<List<ResultTaskDto>>> GetTasksWithTasksType(string? tasksType);
+
     }
 }

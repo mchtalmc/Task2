@@ -6,7 +6,7 @@ using ToDoList.DataLayer.Concrete;
 namespace ToDoList.DataLayer.Repository;
 
 
-public class GenericRepository<T> : IGenericDal<T> where T : class
+public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
    
 
@@ -40,7 +40,7 @@ public class GenericRepository<T> : IGenericDal<T> where T : class
         return true;
     }
 
-    public async Task<T> TGet(int id)
+    public async Task<T> TGet(int? id)
     {
         var value= await _context.Set<T>().FindAsync(id);
         return value;
